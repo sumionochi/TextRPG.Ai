@@ -3,7 +3,9 @@ import { internalAction, internalQuery, mutation } from "./_generated/server";
 import OpenAI from "openai";
 import { api, internal } from "./_generated/api";
 
-const openai = new OpenAI();
+const openai = new OpenAI({
+  apiKey: "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",
+});
 
 export const createAdventure = mutation({
   args: {
