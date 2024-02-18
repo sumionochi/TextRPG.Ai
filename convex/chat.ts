@@ -1,51 +1,92 @@
-import { action, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
+import { action, internalQuery, mutation, query } from "./_generated/server";
+import { api, internal } from "./_generated/api";
 import OpenAI from "openai";
-import { api } from "./_generated/api";
 
-const openai = new OpenAI({
-  apiKey: process.env["OPENAI_API_KEY"], // This is the default and can be omitted
+const openai = new OpenAI();
+
+export const getEntriesForAdventure = internalQuery({
+  args: {
+    adventureId: v.id("adventures"),
+  },
+  handler: async (ctx, args) => {
+    return ctx.db
+      .query("entries")
+      .filter((q) => q.eq(q.field("adventureId"), args.adventureId))
+      .collect();
+  },
 });
 
 export const handlePlayerAction = action({
   args: {
     message: v.string(),
+    adventureId: v.id("adventures"),
   },
-  handler: async (context, args) => {
-    const chatCompletion = await openai.chat.completions.create({
-      messages: [{ role: "user", content: args.message }],
+  handler: async (ctx, args) => {
+    const entries = await ctx.runQuery(internal.chat.getEntriesForAdventure, {
+      adventureId: args.adventureId,
+    });
+
+    const prefix = entries
+      .map((entry) => {
+        return `${entry.input}\n\n${entry.response}`;
+      })
+      .join("\n\n");
+
+    const userPrompt = args.message;
+
+    const completion = await openai.chat.completions.create({
+      messages: [{ role: "user", content: `${prefix}${userPrompt}` }],
       model: "gpt-3.5-turbo",
     });
 
-    const input = args.message;
-    const response = chatCompletion.choices[0].message.content ?? "";
+    const input = userPrompt;
+    const response = completion.choices[0].message.content ?? "";
 
-    await context.runMutation(api.chat.storeEntry, {
+    await ctx.runMutation(api.chat.insertEntry, {
       input,
       response,
+      adventureId: args.adventureId,
     });
-
-    console.log(chatCompletion);
-    return chatCompletion;
   },
 });
 
-export const storeEntry = mutation({
+export const insertEntry = mutation({
   args: {
     input: v.string(),
     response: v.string(),
+    adventureId: v.id("adventures"),
   },
-  handler: async (context, args) => {
-    context.db.insert("entries", {
+  handler: async (ctx, args) => {
+    const entryId = await ctx.db.insert("entries", {
       input: args.input,
       response: args.response,
+      adventureId: args.adventureId,
+      health: 10,
+      inventory: [],
+    });
+
+    await ctx.scheduler.runAfter(0, internal.visualize.visualizeLatestEntries, {
+      adventureId: args.adventureId,
+      entryId: entryId,
+    });
+
+    await ctx.scheduler.runAfter(0, internal.inventory.summarizeInventory, {
+      adventureId: args.adventureId,
+      entryId: entryId,
     });
   },
 });
 
-export const getEntries = query({
-  handler: async (context) => {
-    const entries = await context.db.query("entries").collect();
+export const getAllEntries = query({
+  args: {
+    adventureId: v.id("adventures"),
+  },
+  handler: async (ctx, args) => {
+    const entries = await ctx.db
+      .query("entries")
+      .filter((q) => q.eq(q.field("adventureId"), args.adventureId))
+      .collect();
     return entries;
   },
 });
