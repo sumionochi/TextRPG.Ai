@@ -4,6 +4,7 @@ import { useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MoveUpRight, Sword, Wand } from "lucide-react";
 
 export default function Main() {
   const createAdventure = useMutation(api.adventure.createAdventure);
@@ -17,23 +18,18 @@ export default function Main() {
       </h1>
 
       <div className="grid grid-cols-3 gap-8">
-        {["warrior", "wizard", "archer"].map((character) => {
-          return (
-            <div
-              key={character}
-              className="flex flex-col items-center gap-2 text-2xl"
-            >
-              <img
-                onClick={() => setSelectedCharacter(character)}
-                src={`/${character}.png`}
-                className={
-                  selectedCharacter === character ? "border border-white" : ""
-                }
-              />
-              {character}
-            </div>
-          );
-        })}
+        <div className="flex justify-center items-center flex-col">
+          <Sword/>
+          <p>Warrior</p>
+        </div>
+        <div className="flex justify-center items-center flex-col">
+          <Wand/>
+          <p>Wizard</p>
+        </div>
+        <div className="flex justify-center items-center flex-col">
+          <MoveUpRight/>
+          <p>Arrow</p>
+        </div>
       </div>
 
       <button
