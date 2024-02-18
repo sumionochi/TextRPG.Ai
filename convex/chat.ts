@@ -1,4 +1,4 @@
-import { action, mutation } from "./_generated/server";
+import { action, mutation, query } from "./_generated/server";
 import { v } from "convex/values";
 import OpenAI from "openai";
 import { api } from "./_generated/api";
@@ -40,5 +40,12 @@ export const storeEntry = mutation({
       input: args.input,
       response: args.response,
     });
+  },
+});
+
+export const getEntries = query({
+  handler: async (context) => {
+    const entries = await context.db.query("entries").collect();
+    return entries;
   },
 });

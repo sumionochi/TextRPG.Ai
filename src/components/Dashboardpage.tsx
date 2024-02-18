@@ -2,19 +2,29 @@
 import React, { useState } from 'react'
 import { Input } from './ui/input';
 import { Button } from './ui/button';
-import { useAction } from "convex/react";
+import { useAction, useQuery } from "convex/react";
 import { api } from '../../convex/_generated/api';
 
 type Props = {}
 
 const Dashboardpage = (props: Props) => {
   const handlePlayerAction = useAction(api.chat.handlePlayerAction);
+  const entries = useQuery(api.chat.getEntries)
   const [message, setMessage] = useState("");
 
   return (
     <main className='flex min-h-screen flex-row pt-24 px-4'>
-        <div className='flex flex-col w-1/2'>
-            <div className='bg-primary'></div>
+        <div className='flex flex-col w-1/2 gap-3'>
+            <div className='bg-secondary p-4 rounded-md'>
+                {entries?.map(entry=>{
+                    return (
+                        <div key={entry._id} className='flex flex-col gap-2'>
+                            <div>{entry.input}</div>
+                            <div>{entry.response}</div>
+                        </div>
+                    )
+                })}
+            </div>
             <form onSubmit={(e)=>{
                 e.preventDefault();
                 handlePlayerAction({message})
