@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useAction, useQuery } from "convex/react";
 import { api } from "../../../../convex/_generated/api";
 import { Id } from "../../../../convex/_generated/dataModel";
-import Dice from "react-dice-roll";
 
 function Spinner() {
   return (
@@ -73,10 +72,7 @@ export default function Adventure(props: {
             </div>
 
             <div className="flex gap-2">
-              <Dice
-                size={40}
-                onRoll={(value) => setMessage(value.toString())}
-              />
+              
               <form
                 className="flex gap-2"
                 onSubmit={(e) => {
