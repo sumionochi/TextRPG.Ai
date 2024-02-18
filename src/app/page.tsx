@@ -1,59 +1,52 @@
-import { Button } from '@/components/ui/button'
-import { ArrowRight, ArrowUpRight, BarChartBig, Bot, Github, Linkedin, Mail, Medal} from 'lucide-react'
-import Link from 'next/link'
+"use client";
 
-export default async function Home() {
+import { useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+
+export default function Main() {
+  const createAdventure = useMutation(api.adventure.createAdventure);
+  const router = useRouter();
+  const [selectedCharacter, setSelectedCharacter] = useState("warrior");
+
   return (
-    <div className='flex relative overflow-hidden antialiased flex-col items-center justify-between pt-0'>
-        <div className='flex pb-24 sm:pb-0 flex-col gap-8 max-w-6xl sm:flex-row min-h-screen pt-10 sm:pt-28 px-4'>
-          <div className='text-left font-semibold text-white flex flex-col gap-8'>
-            <h1 className='text-2xl md:text-5xl'>Text-based RPG Game. Where <span className='text-purple-700 dark:text-gray-500'>Dungeon Master Is An AI</span>.</h1>
-            <h3 className='text-md'>OpenAI generates the games dialogue and items, while DALL-E generates icons for the items. The game includes exploration, battles, and inventory management. The game also includes image generation for scene descriptions.
-            </h3>
-            <div>
-              <Button className='p-6 shadow-md shadow-black border-none bg-gradient-to-br from-violet-500 to-violet-300 dark:from-gray-900 text-white rounded-xl' size={'lg'} asChild>
-                <Link href={'/dashboard'}>Let's Play <ArrowRight className='ml-1 w-5 h-5'/></Link>
-              </Button>
+    <div className="flex justify-center items-center w-full h-screen font-chakra flex-col gap-8">
+      <h1 className="text-4xl text-white">
+        Welcome to the Text Based RPG Game
+      </h1>
+
+      <div className="grid grid-cols-3 gap-8">
+        {["warrior", "wizard", "archer"].map((character) => {
+          return (
+            <div
+              key={character}
+              className="flex flex-col items-center gap-2 text-2xl"
+            >
+              <img
+                onClick={() => setSelectedCharacter(character)}
+                src={`/${character}.png`}
+                className={
+                  selectedCharacter === character ? "border border-white" : ""
+                }
+              />
+              {character}
             </div>
-          </div>
-          <div className='text-center gap-8 flex flex-col'>
-            <Button className='p-6 shadow-md gap-2 shadow-black border-none bg-gradient-to-br from-purple-500 to-violet-300 text-white dark:from-gray-900 rounded-xl'>
-              <Link href={'/dashboard'} className='flex flex-row gap-2 items-center'>
-                <Bot/>
-                Ai Powered
-              </Link>
-            </Button>
-            <Button className='p-6 gap-2 shadow-md shadow-black border-none bg-gradient-to-br from-purple-500 to-violet-300 dark:from-gray-900 text-white rounded-xl'>
-              <Link className='flex flex-row gap-2 items-center' href={'/dashboard'}>
-                <BarChartBig/>
-                DALL-E generates icons
-              </Link>        
-            </Button>
-            <Button className='p-6 gap-2 shadow-md shadow-black border-none bg-gradient-to-br from-purple-500 to-violet-300 text-wrap sm:text-nowrap text-white dark:from-gray-900 rounded-xl'>
-              <Link className='flex flex-row gap-2 items-center' href={'/dashboard'}>
-                <Medal/>
-                Exploration, battles, and inventory management. 
-              </Link>
-            </Button>
-          </div>
-        </div>
-        <div className='flex px-4 pt-1 bg-white/20 text-white justify-between gap-4 flex-row items-center text-primary h-14 absolute bottom-0 w-full'>
-          <h2 className='text-white'>© 2023 AssessMe.AI</h2>
-          <div className='flex flex-row gap-4 justify-center items-center'>
-            <Link href={'https://github.com/sumionochi'}>
-              <Github/>
-            </Link>
-            <Link href={'https://www.linkedin.com/in/aaditya-srivastava-b4564821b/'}>
-              <Linkedin/>
-            </Link>
-            <Link href={'mailto:aaditya.srivastava.connect@gmail.com'}>
-              <Mail/>
-            </Link>
-            <Link href={'https://sumionochi.github.io/Portfolio-landing-page/'}>
-              <ArrowUpRight/>
-            </Link>
-          </div>
-        </div>
+          );
+        })}
+      </div>
+
+      <button
+        className="bg-gray-500 hover:bg-gray-400 px-2 py-1 rounded-md"
+        onClick={async () => {
+          const adventureId = await createAdventure({
+            character: selectedCharacter,
+          });
+          router.push(`/dashboard/${adventureId}`);
+        }}
+      >
+        Start an Adventure
+      </button>
     </div>
-  )
+  );
 }
