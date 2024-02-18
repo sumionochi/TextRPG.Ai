@@ -1,13 +1,6 @@
 import { Button } from '@/components/ui/button'
-import { ArrowRight, ArrowUpRight, BarChart, BarChart2, BarChartBig, BookText, Bot, BotIcon, GitGraph, Github, Key, Linkedin, Lock, Mail, Map, Medal, Monitor, ScrollText, Text } from 'lucide-react'
-import Image from 'next/image'
+import { ArrowRight, ArrowUpRight, BarChartBig, Bot, Github, Linkedin, Mail, Medal} from 'lucide-react'
 import Link from 'next/link'
-import Typewriter from '@/components/ui/Typewriter'
-import { ThemeProvider } from '@/components/ui/ThemeProvider'
-import { redirect } from 'next/navigation'
-import { auth } from '@clerk/nextjs'
-import { currentUser } from '@clerk/nextjs';
-
 
 export default async function Home() {
   return (

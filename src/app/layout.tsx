@@ -1,7 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import ConvexClientProvider from "./ConvexClientProvider";
-import { dark, neobrutalism } from '@clerk/themes';
 import { Lexend } from 'next/font/google'
 import { cn } from '@/lib/utils'
 import { ThemeProvider } from "@/components/ui/ThemeProvider";
