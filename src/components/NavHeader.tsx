@@ -1,10 +1,9 @@
 "use client"
 import React, { useState } from 'react'
-import { Button } from './ui/button'
-import { Themetoggle } from './ui/Themetoggle'
 import Logo from './Logo'
 import { Gamepad, Gamepad2Icon, MonitorCheck, Pencil } from 'lucide-react'
 import Link from 'next/link'
+import { Themetoggle } from './ui/Themetoggle'
 
 
 type Props = {
@@ -18,7 +17,6 @@ const NavHeader = ({}: Props) => {
           <Logo/>
           <div className='flex-1 flex items-center justify-end space-x-4'>
             <div className='flex gap-0 bg-secondary p-4 mr-0 rounded-lg'>
-              
               <Themetoggle/>
             </div>
           </div>
