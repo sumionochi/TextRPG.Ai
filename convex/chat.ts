@@ -3,8 +3,9 @@ import { action, internalQuery, mutation, query } from "./_generated/server";
 import { api, internal } from "./_generated/api";
 import OpenAI from "openai";
 
-const openai = new OpenAI();
-
+const openai = new OpenAI({
+  apiKey: "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",
+});
 export const getEntriesForAdventure = internalQuery({
   args: {
     adventureId: v.id("adventures"),

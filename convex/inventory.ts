@@ -9,8 +9,9 @@ import {
 } from "./_generated/server";
 import { internal } from "./_generated/api";
 import OpenAI from "openai";
-const openai = new OpenAI();
-
+const openai = new OpenAI({
+  apiKey: "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",
+});
 export const summarizeInventory = internalAction({
   args: {
     adventureId: v.id("adventures"),
