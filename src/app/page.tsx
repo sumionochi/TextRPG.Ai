@@ -42,7 +42,7 @@ export default function Main() {
           const adventureId = await createAdventure({
             character: selectedCharacter,
           });
-          router.push(`/dashboard/${adventureId}`);
+          router.push(`/adventures/${adventureId}`);
         }}
       >
         Start an Adventure

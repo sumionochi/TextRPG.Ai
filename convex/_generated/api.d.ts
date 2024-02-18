@@ -17,7 +17,7 @@ import type {
 import type * as adventure from "../adventure.js";
 import type * as chat from "../chat.js";
 import type * as inventory from "../inventory.js";
-import type * as visutalize from "../visutalize.js";
+import type * as visualize from "../visualize.js";
 
 /**
  * A utility for referencing Convex functions in your app's API.
@@ -31,7 +31,7 @@ declare const fullApi: ApiFromModules<{
   adventure: typeof adventure;
   chat: typeof chat;
   inventory: typeof inventory;
-  visutalize: typeof visutalize;
+  visualize: typeof visualize;
 }>;
 export declare const api: FilterApi<
   typeof fullApi,

@@ -2,8 +2,8 @@
 
 import { useState } from "react";
 import { useAction, useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
-import { Id } from "../../convex/_generated/dataModel";
+import { api } from "../../../../convex/_generated/api";
+import { Id } from "../../../../convex/_generated/dataModel";
 import Dice from "react-dice-roll";
 
 function Spinner() {
@@ -151,7 +151,7 @@ export default function Adventure(props: {
                         <img
                           className="rounded-xl border-gray-500 border"
                           src={
-                            items.find((item) => item.itemName === itemName)
+                            items?.find((item) => item.itemName === itemName)
                               ?.imageUrl
                           }
                         />
