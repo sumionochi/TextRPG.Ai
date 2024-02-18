@@ -8,7 +8,7 @@ import {
 import { internal } from "./_generated/api";
 import OpenAI from "openai";
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: "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",
 });
 export const visualizeLatestEntries = internalAction({
   args: {

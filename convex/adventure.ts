@@ -4,7 +4,7 @@ import OpenAI from "openai";
 import { api, internal } from "./_generated/api";
 
 const openai = new OpenAI({
-  apiKey: "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",
+  apiKey: "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",
 });
 
 export const createAdventure = mutation({
